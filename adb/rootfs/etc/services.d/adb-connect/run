@@ -1,0 +1,31 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Android Debug Bridge
+# Trys to connect devices to the Android Debug Bridge
+# ==============================================================================
+declare path
+
+# Wait for ADB to become available
+bashio::net.wait_for 5037
+
+path="/data"
+# If the user specified a custom keys path, use that.
+if bashio::config.has_value 'keys_path'; then
+    path="$(bashio::config 'keys_path')"
+fi
+
+# If the key does not exists yet, it probably is still generating
+if ! bashio::fs.file_exists "${path}/adbkey"; then
+    sleep 10
+fi
+
+# Try to (re)connect to all devices
+if bashio::config.has_value 'devices'; then
+    while read -r device; do
+        bashio::log.info "Connecting to device: ${device}..."
+        adb connect "${device}"
+    done <<< "$(bashio::config 'devices')"
+fi
+
+# Sleep until next loop
+exec sleep "$(bashio::config 'reconnect_timeout')"
