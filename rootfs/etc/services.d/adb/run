@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Android Debug Bridge
+# Runs the Android Debug Bridge server
+# ==============================================================================
+declare -a options
+
+bashio::log.info 'Starting the Android Debug Bridge server...'
+
+# Start options for ADB
+options+=(-a)
+options+=(server)
+options+=(nodaemon)
+
+# Run ADB
+exec adb "${options[@]}"

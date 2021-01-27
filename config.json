@@ -1,0 +1,27 @@
+{
+  "name": "AMCU ADB - Android Debug Bridge",
+  "version": "dev",
+  "slug": "adb",
+  "description": "The Android Debug Bridge server program for Apex MCU",
+  "url": "https://github.com/apex-connect/adb-server",
+  "startup": "services",
+  "ports": {
+    "5037/tcp": 5037
+  },
+  "ports_description": {
+    "5037/tcp": "AMCU ADB Server"
+  },
+  "arch": ["aarch64", "amd64", "armv7", "i386"],
+  "init": false,
+  "map": ["config:rw", "share:rw", "ssl:rw"],
+  "options": {
+    "devices": [],
+    "reconnect_timeout": 90
+  },
+  "schema": {
+    "log_level": "list(trace|debug|info|notice|warning|error|fatal)?",
+    "keys_path": "str?",
+    "devices": ["str"],
+    "reconnect_timeout": "int"
+  }
+}
